@@ -1,5 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
 
+const cloudflareD1DatabaseId = process.env.CLOUDFLARE_D1_DATABASE_ID
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-05',
@@ -79,6 +81,9 @@ export default defineNuxtConfig({
   routeRules: {
     // Static assets - immutable, long cache
     '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    // OG images are generated on demand by the Cloudflare Worker. Keeping them
+    // out of the prerender crawler avoids renderer timeouts during builds.
+    '/_og/**': { prerender: false },
     // Pages - prerender as static (reset on each deploy)
     '/docs/**': { prerender: true },
     '/blocks/**': { prerender: true },
@@ -112,13 +117,13 @@ export default defineNuxtConfig({
       deployConfig: true,
       nodeCompat: true,
       wrangler: {
-        name: 'shadcn-vue-nuxt',
-        d1_databases: [
-          {
-            binding: 'DB',
-            database_id: '4c26cb33-9277-4c9b-8433-42f0a6e84b69',
-          },
-        ],
+        name: 'v-design',
+        workers_dev: false,
+        preview_urls: false,
+        routes: [{ pattern: 'ui.v-xy.com', custom_domain: true }],
+        d1_databases: cloudflareD1DatabaseId
+          ? [{ binding: 'DB', database_name: 'v-design', database_id: cloudflareD1DatabaseId }]
+          : [],
         observability: {
           logs: {
             enabled: true,
@@ -143,7 +148,7 @@ export default defineNuxtConfig({
         // still hits Bunny at runtime — hence the preconnect.
         { rel: 'preconnect', href: 'https://fonts.bunny.net', crossorigin: '' },
       ],
-      meta: [{ name: 'keywords', content: 'Nuxt,Vue,Tailwind CSS,Components,shadcn' }],
+      meta: [{ name: 'keywords', content: 'V-Design,Nuxt,Vue,Tailwind CSS,Components,Design System' }],
     },
   },
   fonts: {

@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import {
-  Picker,
-  PickerCheckboxItem,
-  PickerContent,
-  PickerGroup,
-  PickerItem,
-  PickerLabel,
-  PickerRadioGroup,
-  PickerRadioItem,
-  PickerSeparator,
-  PickerShortcut,
-  PickerSub,
-  PickerSubContent,
-  PickerSubTrigger,
-  PickerTrigger,
-} from './index'
+import Picker from './Picker.vue'
+import PickerCheckboxItem from './PickerCheckboxItem.vue'
+import PickerContent from './PickerContent.vue'
+import PickerGroup from './PickerGroup.vue'
+import PickerItem from './PickerItem.vue'
+import PickerLabel from './PickerLabel.vue'
+import PickerRadioGroup from './PickerRadioGroup.vue'
+import PickerRadioItem from './PickerRadioItem.vue'
+import PickerSeparator from './PickerSeparator.vue'
+import PickerShortcut from './PickerShortcut.vue'
+import PickerSub from './PickerSub.vue'
+import PickerSubContent from './PickerSubContent.vue'
+import PickerSubTrigger from './PickerSubTrigger.vue'
+import PickerTrigger from './PickerTrigger.vue'
 
 const showStatusBar = ref(true)
 const showActivityBar = ref(false)

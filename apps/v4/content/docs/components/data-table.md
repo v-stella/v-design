@@ -870,7 +870,7 @@ export const columns = columnHelper.columns([
 
 ## Reusable Components
 
-Here are some components you can use to build your data tables. This is from the [Tasks](/examples/tasks) demo.
+Here are some components you can use to build your data tables. These examples are adapted from the Tasks demo.
 
 ### Column header
 

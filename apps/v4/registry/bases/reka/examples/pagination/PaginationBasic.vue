@@ -11,32 +11,28 @@ import {
 </script>
 
 <template>
-  <Pagination>
+  <Pagination :items-per-page="10" :total="50">
     <PaginationContent>
-      <PaginationItem>
-        <PaginationPrevious href="#" />
-      </PaginationItem>
-      <PaginationItem>
+      <PaginationPrevious href="#" />
+      <PaginationItem :value="1">
         <PaginationLink href="#">
           1
         </PaginationLink>
       </PaginationItem>
-      <PaginationItem>
+      <PaginationItem :value="2">
         <PaginationLink href="#" :is-active="true">
           2
         </PaginationLink>
       </PaginationItem>
-      <PaginationItem>
+      <PaginationItem :value="3">
         <PaginationLink href="#">
           3
         </PaginationLink>
       </PaginationItem>
-      <PaginationItem>
+      <PaginationItem :value="4">
         <PaginationEllipsis />
       </PaginationItem>
-      <PaginationItem>
-        <PaginationNext href="#" />
-      </PaginationItem>
+      <PaginationNext href="#" />
     </PaginationContent>
   </Pagination>
 </template>

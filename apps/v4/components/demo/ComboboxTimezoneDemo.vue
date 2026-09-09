@@ -53,7 +53,7 @@ const timezones = [
 ]
 
 const selectedTimezone = ref<(typeof timezones)[number]['timezones'][number]>(
-  timezones[0].timezones[0],
+  timezones[0]!.timezones[0]!,
 )
 
 const selectedGroup = computed(() =>

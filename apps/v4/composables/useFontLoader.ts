@@ -1,4 +1,4 @@
-import type { FontFaceData, LocalFontSource, RemoteFontSource, Unifont } from 'unifont'
+import type { FontFaceData, LocalFontSource, Provider, RemoteFontSource, Unifont } from 'unifont'
 
 // Families already emitted globally by @nuxt/fonts (see `fonts.families` in nuxt.config.ts).
 // Loading them again through unifont would be wasteful and could duplicate faces.
@@ -9,13 +9,15 @@ const DEFAULT_WEIGHTS = ['400', '500', '600', '700']
 
 // Module-level singletons so every caller shares one unifont instance, one
 // "already loaded" set, and one in-flight map (dedupe across the whole app).
-let unifontPromise: Promise<Unifont> | null = null
+type BunnyUnifont = Unifont<[Provider<'bunny'>]>
+
+let unifontPromise: Promise<BunnyUnifont> | null = null
 const loaded = new Set<string>()
 const inFlight = new Map<string, Promise<void>>()
 
 // unifont (and its css-tree dependency) is only pulled into the bundle for pages
 // that actually resolve a non-default font — hence the dynamic import.
-async function getUnifont(): Promise<Unifont> {
+async function getUnifont(): Promise<BunnyUnifont> {
   if (!unifontPromise) {
     unifontPromise = (async () => {
       const { createUnifont, providers } = await import('unifont')

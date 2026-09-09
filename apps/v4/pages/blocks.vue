@@ -24,8 +24,8 @@ useSeoMeta({
         <a href="#blocks">Browse Blocks</a>
       </Button>
       <Button as-child variant="ghost" size="sm">
-        <NuxtLink to="/docs/blocks">
-          Add a block
+        <NuxtLink to="/docs/registry/getting-started">
+          Build your registry
         </NuxtLink>
       </Button>
     </PageActions>

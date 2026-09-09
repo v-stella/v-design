@@ -35,7 +35,7 @@ it('buildMappingFromRecords keeps first on conflict and warns', () => {
     { lucide: 'XIcon', tabler: 'IconX' },
     { lucide: 'XIcon', tabler: 'IconXbox' },
   ])
-  assert.equal(mapping.XIcon.tabler, 'IconX')
+  assert.equal(mapping.XIcon!.tabler, 'IconX')
   assert.ok(warnings.some(w => w.includes('XIcon')))
 })
 
@@ -43,9 +43,9 @@ it('mergeLegacy: legacy values win, scan fills only missing libraries', () => {
   const legacy = { Loader2: { lucide: 'Loader2', radix: 'ReloadIcon', tabler: 'IconLoader2', phosphor: 'PhCircleNotch', remixicon: 'RiLoader4Line' } }
   const scanned = { Loader2Icon: { lucide: 'Loader2Icon', tabler: 'IconLoader2', hugeicons: 'Loading03Icon', phosphor: 'PhSpinnerGap', remixicon: 'RiLoader4Line' } }
   const out = mergeLegacy(legacy, scanned)
-  assert.equal(out.Loader2.phosphor, 'PhCircleNotch') // legacy wins, NOT PhSpinnerGap
-  assert.equal(out.Loader2.hugeicons, 'Loading03Icon') // gap filled from scan
-  assert.equal(out.Loader2.radix, 'ReloadIcon') // radix preserved
+  assert.equal(out.Loader2!.phosphor, 'PhCircleNotch') // legacy wins, NOT PhSpinnerGap
+  assert.equal(out.Loader2!.hugeicons, 'Loading03Icon') // gap filled from scan
+  assert.equal(out.Loader2!.radix, 'ReloadIcon') // radix preserved
   assert.ok(!('Loader2Icon' in out)) // scanned key consumed via +Icon bridge
 })
 
@@ -107,7 +107,7 @@ it('validateNames: real names pass, bogus name fails', async () => {
   assert.deepEqual(ok, []) // radix skipped; PhX and IconX are real
   const bad = await validateNames({ Nope: { phosphor: 'PhTotallyNotAnIcon' } })
   assert.equal(bad.length, 1)
-  assert.ok(bad[0].includes('PhTotallyNotAnIcon'))
+  assert.ok(bad[0]!.includes('PhTotallyNotAnIcon'))
 })
 
 it('parseLucideImports: resolves aliases and type modifiers to the exported name', () => {

@@ -3,9 +3,9 @@ import { IconArrowRight } from '@tabler/icons-vue'
 import { Button } from '@/styles/reka-rhea/ui/button'
 import CardsDemo from '~/components/examples/cards/CardsDemo.vue'
 
-const title = 'The Foundation for your Design System'
+const title = 'Build your design system with V-Design'
 const description
-  = 'A set of beautifully designed components that you can customize, extend, and build on. Start here then make it your own. Open Source. Open Code.'
+  = 'Accessible Vue components, patterns, and blocks that you can customize, extend, and own. Open Source. Open Code.'
 
 useSeoMeta({
   title,

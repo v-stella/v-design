@@ -1,10 +1,10 @@
-import type { VNode } from 'vue'
+import type { HTMLAttributes, VNode } from 'vue'
 import { FileIcon } from '@lucide/vue'
 import { defineComponent, h } from 'vue'
 
 interface IconProps {
-  class?: string
-  style?: Record<string, any>
+  class?: HTMLAttributes['class']
+  style?: HTMLAttributes['style']
   [key: string]: any
 }
 

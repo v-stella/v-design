@@ -1,11 +1,11 @@
 {
-  "name": "shadcn-vue",
+  "name": "v-design",
   "type": "module",
   "version": "2.8.2",
   "private": true,
   "packageManager": "pnpm@10.25.0",
   "license": "MIT",
-  "repository": "unovue/shadcn-vue",
+  "repository": "v-stella/v-design",
   "workspaces": [
     "packages/*"
   ],
@@ -13,22 +13,23 @@
     "pnpm": ">=9.6.0"
   },
   "scripts": {
-    "dev": "pnpm --filter v4 dev",
-    "build": "pnpm --filter v4 build",
-    "preview": "pnpm --filter v4 preview",
-    "prepare": "pnpm simple-git-hooks && pnpm --filter shadcn-vue build",
+    "dev": "pnpm --filter ./apps/v4 dev",
+    "build": "pnpm --filter ./apps/v4 build",
+    "preview": "pnpm --filter ./apps/v4 preview",
+    "prepare": "pnpm simple-git-hooks && pnpm --filter ./packages/cli build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "dev:cli": "pnpm --filter shadcn-vue dev",
-    "dev:nuxt": "pnpm --filter shadcn-nuxt dev",
-    "start:cli": "pnpm --filter shadcn-vue start:dev",
-    "build:cli": "pnpm --filter shadcn-vue build",
-    "registry:build-only": "pnpm --filter=v4 registry:build",
-    "registry:build": "pnpm --filter=v4 registry:build && pnpm lint:fix",
+    "dev:cli": "pnpm --filter ./packages/cli dev",
+    "dev:nuxt": "pnpm --filter ./packages/module dev",
+    "start:cli": "pnpm --filter ./packages/cli start:dev",
+    "build:cli": "pnpm --filter ./packages/cli build",
+    "registry:build-only": "pnpm --filter ./apps/v4 registry:build",
+    "registry:build": "pnpm --filter ./apps/v4 registry:build && pnpm lint:fix",
     "bumpp": "bumpp package.json packages/*/package.json apps/*/package.json",
     "pub:beta": "cd packages/cli && pnpm pub:beta",
     "pub:release": "cd packages/cli && pnpm pub:release",
-    "test": "pnpm --filter shadcn-vue test && pnpm --filter v4 test",
+    "test": "pnpm --filter ./packages/cli test && pnpm --filter ./apps/v4 test",
+    "typecheck": "pnpm --filter ./apps/v4 typecheck",
     "taze": "taze --ignore-paths \"deprecated/**\" -frI"
   },
   "devDependencies": {

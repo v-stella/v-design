@@ -68,9 +68,12 @@ export function mergeLegacy(legacy: IconMapping, scanned: IconMapping): IconMapp
     const scannedKey
       = canonical in remaining ? canonical : `${canonical}Icon` in remaining ? `${canonical}Icon` : undefined
     if (scannedKey) {
+      const scannedEntry = remaining[scannedKey]
+      if (!scannedEntry)
+        continue
       for (const library of LIBRARY_ORDER) {
-        if (!entry[library] && remaining[scannedKey][library]) {
-          entry[library] = remaining[scannedKey][library]
+        if (!entry[library] && scannedEntry[library]) {
+          entry[library] = scannedEntry[library]
         }
       }
       delete remaining[scannedKey]
@@ -79,10 +82,13 @@ export function mergeLegacy(legacy: IconMapping, scanned: IconMapping): IconMapp
   }
 
   for (const canonical of Object.keys(remaining).sort()) {
+    const remainingEntry = remaining[canonical]
+    if (!remainingEntry)
+      continue
     const entry: Record<string, string> = {}
     for (const library of LIBRARY_ORDER) {
-      if (remaining[canonical][library])
-        entry[library] = remaining[canonical][library]
+      if (remainingEntry[library])
+        entry[library] = remainingEntry[library]
     }
     output[canonical] = entry
   }
@@ -117,7 +123,10 @@ export function findUncovered(mapping: IconMapping, usedLucide: string[]): strin
 export function parseLucideImports(source: string): string[] {
   const names: string[] = []
   for (const m of source.matchAll(/import\s*\{([^}]*)\}\s*from\s*['"]@lucide\/vue['"]/g)) {
-    for (const raw of m[1].split(',')) {
+    const imports = m[1]
+    if (!imports)
+      continue
+    for (const raw of imports.split(',')) {
       const name = raw.trim().replace(/^type\s+/, '').split(/\s+as\s+/)[0]?.trim()
       if (name)
         names.push(name)

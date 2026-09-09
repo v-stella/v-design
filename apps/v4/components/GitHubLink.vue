@@ -4,7 +4,7 @@ import { siteConfig } from '@/lib/config'
 import { Button } from '@/registry/new-york-v4/ui/button'
 import { Skeleton } from '@/registry/new-york-v4/ui/skeleton'
 
-const { data, pending } = useLazyFetch('https://ungh.cc/repos/unovue/shadcn-vue')
+const { data, pending } = useLazyFetch('https://ungh.cc/repos/v-stella/v-design')
 
 const stars = computed(() => {
   const count = (data.value as any)?.repo?.stars

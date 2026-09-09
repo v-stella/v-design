@@ -10,7 +10,7 @@ import {
   DialogTitle,
 } from '@/registry/new-york-v4/ui/dialog'
 
-const STORAGE_KEY = 'shadcn-vue-welcome-dismissed'
+const STORAGE_KEY = 'v-design-welcome-dismissed'
 
 const hasSeenWelcome = useLocalStorage(STORAGE_KEY, false)
 const open = ref(false)
@@ -42,7 +42,7 @@ function handleOpenChange(value: boolean) {
     <DialogContent class="max-w-md">
       <DialogHeader>
         <DialogTitle class="text-xl">
-          Welcome to shadcn-vue
+          Welcome to V-Design
         </DialogTitle>
         <DialogDescription class="text-base">
           Build your perfect theme and get started with a new project.

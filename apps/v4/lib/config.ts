@@ -1,12 +1,12 @@
 export const siteConfig = {
-  name: 'shadcn/vue',
-  url: 'https://shadcn-vue.com',
-  ogImage: 'https://shadcn-vue.com/og.jpg',
+  name: 'V-Design',
+  url: 'https://ui.v-xy.com',
+  ogImage: 'https://ui.v-xy.com/opengraph-image.png',
   description:
-    'A set of beautifully-designed, accessible components and a code distribution platform. Works with your favorite frameworks. Open Source. Open Code.',
+    'An open-code Vue design system with accessible components, patterns, blocks, and a component registry.',
   links: {
-    twitter: 'https://twitter.com/unovue',
-    github: 'https://github.com/unovue/shadcn-vue',
+    github: 'https://github.com/v-stella/v-design',
+    upstream: 'https://github.com/unovue/shadcn-vue',
   },
   navItems: [
     {

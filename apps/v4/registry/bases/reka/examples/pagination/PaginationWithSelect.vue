@@ -3,7 +3,6 @@ import { Field, FieldLabel } from "@/registry/bases/reka/ui/field"
 import {
   Pagination,
   PaginationContent,
-  PaginationItem,
   PaginationNext,
   PaginationPrevious,
 } from "@/registry/bases/reka/ui/pagination"
@@ -45,14 +44,10 @@ import {
         </SelectContent>
       </Select>
     </Field>
-    <Pagination class="mx-0 w-auto">
+    <Pagination :items-per-page="25" :total="100" class="mx-0 w-auto">
       <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationNext href="#" />
-        </PaginationItem>
+        <PaginationPrevious href="#" />
+        <PaginationNext href="#" />
       </PaginationContent>
     </Pagination>
   </div>

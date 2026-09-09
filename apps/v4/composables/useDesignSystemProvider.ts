@@ -49,7 +49,7 @@ export function useDesignSystemProvider() {
   const colorMode = useColorMode()
 
   useIframeMessageListener('color-mode-sync', (value) => {
-    colorMode.value = value.colorMode as any
+    colorMode.preference = value.colorMode
   })
 
   useIframeMessageListener('design-system-params', (value) => {
