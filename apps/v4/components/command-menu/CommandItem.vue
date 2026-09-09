@@ -4,33 +4,20 @@ import type { HTMLAttributes } from 'vue'
 import { reactiveOmit, useMutationObserver } from '@vueuse/core'
 import { useForwardPropsEmits } from 'reka-ui'
 import { cn } from '@/lib/utils'
-import { CommandItem, useCommand } from '@/registry/new-york-v4/ui/command'
+import { CommandItem } from '@/registry/new-york-v4/ui/command'
 
-const props = defineProps<ListboxItemProps & { class?: HTMLAttributes['class'] }>()
+const props = defineProps<ListboxItemProps & { class?: HTMLAttributes['class'], keywords?: string[] }>()
 
 const emits = defineEmits<{
   (e: 'select'): void
   (e: 'highlight'): void
 }>()
 
-const delegatedProps = reactiveOmit(props, 'class')
+const delegatedProps = reactiveOmit(props, 'class', 'keywords')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 
 const itemRef = useTemplateRef<HTMLElement & typeof CommandItem | null>('itemRef')
-
-const { filterState } = useCommand()
-
-// Makes sure the component re-renders when filterState.search changes
-const isVisible = computed(() => {
-  if (!filterState.search) {
-    return true
-  }
-  const value = props.value?.toString() || ''
-  const keywords = (props as any).keywords || []
-  const extendValue = `${value} ${keywords.join(' ')}`
-  return extendValue.toLowerCase().includes(filterState.search.toLowerCase())
-})
 
 useMutationObserver(itemRef, (mutations) => {
   mutations.forEach((mutation) => {
@@ -52,11 +39,12 @@ useMutationObserver(itemRef, (mutations) => {
 
 <template>
   <CommandItem
-    v-if="isVisible"
     v-bind="forwarded"
     ref="itemRef"
     :class="cn('data-[highlighted]:border-input data-[selected=true]:border-input data-[selected=true]:bg-input/50 data-[highlighted]:bg-input/50  h-9 rounded-md border border-transparent !px-3 font-medium', props.class)"
   >
     <slot />
+    <!-- Command indexes textContent on mount; keep aliases out of the visible/accessibility label. -->
+    <span class="sr-only" aria-hidden="true">{{ props.value }} {{ props.keywords?.join(' ') }}</span>
   </CommandItem>
 </template>

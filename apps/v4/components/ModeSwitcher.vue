@@ -9,7 +9,7 @@ const colorMode = useColorMode()
     variant="ghost"
     size="icon"
     class="group/toggle extend-touch-target size-8"
-    title="Toggle theme"
+    title="切换主题"
     @click="colorMode.preference = colorMode.preference === 'light' ? 'dark' : 'light' "
   >
     <svg
@@ -31,6 +31,6 @@ const colorMode = useColorMode()
       <path d="M12 14.3l7.37 -7.37" />
       <path d="M12 19.6l8.85 -8.85" />
     </svg>
-    <span class="sr-only">Toggle theme</span>
+    <span class="sr-only">切换主题</span>
   </Button>
 </template>

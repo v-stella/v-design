@@ -7,6 +7,7 @@ import { useClipboard } from '@vueuse/core'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useIsMac } from '@/composables/useIsMac'
 import { useConfig } from '@/composables/useUserConfig'
+import { getGroupLabel, getNavigationKeywords, getNavigationLabel } from '@/lib/navigation-labels'
 import { cn } from '@/lib/utils'
 import { Button } from '@/registry/new-york-v4/ui/button'
 import {
@@ -37,7 +38,7 @@ interface Props {
   }
   colors: ColorPalette[]
   blocks?: { name: string, description: string, categories: string[] }[]
-  navItems?: { href: string, label: string }[]
+  navItems?: { href: string, label: string, keywords?: string[] }[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -123,8 +124,8 @@ onMounted(() => {
         )"
         @click="open = true"
       >
-        <span class="hidden xl:inline-flex">Search documentation...</span>
-        <span class="inline-flex xl:hidden">Search...</span>
+        <span class="hidden xl:inline-flex">搜索文档…</span>
+        <span class="inline-flex xl:hidden">搜索…</span>
       </Button>
     </DialogTrigger>
     <DialogContent
@@ -132,34 +133,28 @@ onMounted(() => {
       :show-close-button="false"
     >
       <DialogHeader class="sr-only">
-        <DialogTitle>Search documentation...</DialogTitle>
-        <DialogDescription>Search for a command to run...</DialogDescription>
+        <DialogTitle>搜索文档…</DialogTitle>
+        <DialogDescription>搜索文档、组件或可执行操作</DialogDescription>
       </DialogHeader>
       <Command
         highlight-on-hover
         class="**:data-[slot=command-input-wrapper]:bg-input/50 **:data-[slot=command-input-wrapper]:border-input rounded-none bg-transparent **:data-[slot=command-input]:!h-9 **:data-[slot=command-input]:py-0 **:data-[slot=command-input-wrapper]:mb-0 **:data-[slot=command-input-wrapper]:!h-9 **:data-[slot=command-input-wrapper]:rounded-md **:data-[slot=command-input-wrapper]:border"
-        :filter="(value: string, search: string, keywords?: string[]) => {
-          const extendValue = `${value} ${keywords?.join(' ') || ''}`
-          if (extendValue.toLowerCase().includes(search.toLowerCase())) {
-            return 1
-          }
-          return 0
-        }"
       >
-        <CommandInput placeholder="Search documentation..." />
+        <CommandInput placeholder="搜索文档…" />
         <CommandList class="no-scrollbar min-h-80 scroll-pt-2 scroll-pb-1.5">
           <CommandEmpty class="text-muted-foreground py-12 text-center text-sm">
-            No results found.
+            未找到结果。
           </CommandEmpty>
           <CommandGroup
             v-if="navItems && navItems.length > 0"
-            heading="Pages"
+            heading="页面"
             class="!p-0 [&_[data-slot=command-group-heading]]:scroll-mt-16 [&_[data-slot=command-group-heading]]:!p-3 [&_[data-slot=command-group-heading]]:!pb-1"
           >
             <CommandMenuItem
               v-for="item in navItems"
               :key="item.href"
-              :value="`Navigation ${item.label}`"
+              :value="`Navigation ${item.href}`"
+              :keywords="[item.label, ...(item.keywords ?? [])]"
               @select="() => runCommand(() => router.push(item.href))"
               @highlight="() => {
                 selectedType = 'page'
@@ -173,7 +168,7 @@ onMounted(() => {
           <CommandGroup
             v-for="group in tree?.children"
             :key="group.title"
-            :heading="group.title"
+            :heading="getGroupLabel(group.title)"
             class="!p-0 [&_[data-slot=command-group-heading]]:scroll-mt-16 [&_[data-slot=command-group-heading]]:!p-3 [&_[data-slot=command-group-heading]]:!pb-1"
           >
             <template v-if="group.type === 'group'">
@@ -181,13 +176,13 @@ onMounted(() => {
                 v-for="item in group.children?.filter((i: NavigationItem) => i.type === 'page' || i.type === 'component')"
                 :key="item.title"
                 :value="item.title?.toString() ? `${group.title} ${item.title}` : ''"
-                :keywords="item.type === 'component' ? ['component'] : undefined"
+                :keywords="[...getNavigationKeywords(item), group.title, getGroupLabel(group.title), ...(item.type === 'component' ? ['component'] : [])]"
                 @highlight="() => handlePageHighlight(item.type === 'component', item)"
                 @select="() => runCommand(() => router.push(item.path))"
               >
                 <div v-if="item.type === 'component'" class="border-muted-foreground aspect-square size-4 rounded-full border border-dashed" />
                 <IconArrowRight v-else />
-                {{ item.title }}
+                {{ getNavigationLabel(item) }}
               </CommandMenuItem>
             </template>
           </CommandGroup>
@@ -217,7 +212,7 @@ onMounted(() => {
           </CommandGroup>
           <CommandGroup
             v-if="blocks?.length"
-            heading="Blocks"
+            heading="区块"
             class="!p-0 [&_[data-slot=command-group-heading]]:!p-3"
           >
             <CommandMenuItem
@@ -242,8 +237,8 @@ onMounted(() => {
           <CommandMenuKbd>
             <CornerDownLeft />
           </CommandMenuKbd>
-          <span v-if="selectedType === 'page' || selectedType === 'component'">Go to Page</span>
-          <span v-if="selectedType === 'color'">Copy OKLCH</span>
+          <span v-if="selectedType === 'page' || selectedType === 'component'">前往页面</span>
+          <span v-if="selectedType === 'color'">复制 OKLCH</span>
         </div>
         <Separator v-if="copyPayload" orientation="vertical" class="!h-4" />
         <div v-if="copyPayload" class="flex items-center gap-1">

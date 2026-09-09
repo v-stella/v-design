@@ -38,7 +38,7 @@ const docData = computed(() => data.value!.find(i => i.stem === 'docs')!)
             <Button as-child size="sm" class="h-[31px] rounded-lg">
               <NuxtLink href="/create">
                 <HugeiconsIcon :icon="PlusSignIcon" />
-                New
+                新建
               </NuxtLink>
             </Button>
           </div>

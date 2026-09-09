@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ContentNavigationItem } from '@nuxt/content'
 import type { HTMLAttributes } from 'vue'
+import { getGroupLabel, getNavigationLabel, getPageLabel } from '@/lib/navigation-labels'
 import { cn } from '@/lib/utils'
 import { Button } from '@/registry/new-york-v4/ui/button'
 import {
@@ -73,10 +74,10 @@ function handleNavigate(path: string) {
               )"
             />
           </div>
-          <span class="sr-only">Toggle Menu</span>
+          <span class="sr-only">切换导航菜单</span>
         </div>
         <span class="flex h-8 items-center text-lg leading-none font-medium">
-          Menu
+          菜单
         </span>
       </Button>
     </PopoverTrigger>
@@ -91,12 +92,9 @@ function handleNavigate(path: string) {
       <div class="flex flex-col gap-12 overflow-auto px-6 py-6">
         <div class="flex flex-col gap-4">
           <div class="text-muted-foreground text-sm font-medium">
-            Menu
+            菜单
           </div>
           <div class="flex flex-col gap-3">
-            <NuxtLink class="text-2xl font-medium" to="/" @click="handleNavigate('/')">
-              Home
-            </NuxtLink>
             <NuxtLink v-for="(item, index) in items" :key="index" class="text-2xl font-medium" :to="item.href" @click="handleNavigate(item.href)">
               {{ item.label }}
             </NuxtLink>
@@ -104,7 +102,7 @@ function handleNavigate(path: string) {
         </div>
         <div class="flex flex-col gap-4">
           <div class="text-muted-foreground text-sm font-medium">
-            Sections
+            栏目
           </div>
           <div class="flex flex-col gap-3">
             <NuxtLink
@@ -115,7 +113,7 @@ function handleNavigate(path: string) {
               class="text-2xl font-medium"
               @click="handleNavigate(href)"
             >
-              {{ name }}
+              {{ name === 'Get Started' ? getGroupLabel(name) : getPageLabel(href, name) }}
             </NuxtLink>
           </div>
         </div>
@@ -123,11 +121,11 @@ function handleNavigate(path: string) {
           <template v-for="(group, index) in tree[0]?.children" :key="index">
             <div class="flex flex-col gap-4">
               <div class="text-muted-foreground text-sm font-medium">
-                {{ group.title }}
+                {{ getGroupLabel(group.title) }}
               </div>
               <div class="flex flex-col gap-3">
                 <NuxtLink v-for="item in group.children" :key="item.path" class="flex items-center gap-2 text-2xl font-medium" :to="item.path" @click="handleNavigate(item.path)">
-                  {{ item.title }}
+                  {{ getNavigationLabel(item) }}
                   <span v-if="item.new" class="flex size-2 rounded-full bg-green-500" />
                 </NuxtLink>
               </div>

@@ -1,3 +1,5 @@
+import { getPageLabel, getTopNavLabel } from './navigation-labels'
+
 export const siteConfig = {
   name: 'V-Design',
   url: 'https://ui.v-xy.com',
@@ -45,7 +47,7 @@ export const siteConfig = {
       href: '/typeset',
       label: 'Typeset',
     },
-  ],
+  ].map(item => ({ ...item, label: getTopNavLabel(item.href, item.label), keywords: [item.label, getPageLabel(item.href, item.label)] })),
 }
 
 export const META_THEME_COLORS = {

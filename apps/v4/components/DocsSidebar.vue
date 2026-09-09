@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ContentNavigationItem } from '@nuxt/content'
+import { getGroupLabel, getNavigationLabel, getPageLabel } from '@/lib/navigation-labels'
 import {
   Sidebar,
   SidebarContent,
@@ -89,7 +90,7 @@ function isActive(href: string) {
     <SidebarContent class="w-(--sidebar-menu-width) scroll-fade scrollbar-none overflow-x-hidden pl-2.5">
       <SidebarGroup class="pt-12">
         <SidebarGroupLabel class="font-medium text-muted-foreground">
-          Sections
+          栏目
         </SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
@@ -104,7 +105,7 @@ function isActive(href: string) {
               >
                 <NuxtLink :to="href">
                   <span class="absolute inset-0 flex w-(--sidebar-menu-width) bg-transparent" />
-                  {{ name }}
+                  {{ getPageLabel(href, name) }}
                 </NuxtLink>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -114,13 +115,13 @@ function isActive(href: string) {
 
       <SidebarGroup v-for="item in tree.children?.filter(section => !EXCLUDED_SECTIONS.includes(section.title.toLocaleLowerCase()))" :key="item.title">
         <SidebarGroupLabel class="font-medium text-muted-foreground">
-          {{ item.title }}
+          {{ getGroupLabel(item.title) }}
         </SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu class="gap-0.5">
             <template
               v-for="childItem in item?.children?.filter(child => !EXCLUDED_PAGES.includes(child.path))"
-              :key="String(childItem.url)"
+              :key="childItem.path"
             >
               <SidebarMenuItem>
                 <SidebarMenuButton
@@ -130,11 +131,11 @@ function isActive(href: string) {
                 >
                   <NuxtLink :to="childItem?.path">
                     <span class="absolute inset-0 flex w-(--sidebar-width) bg-transparent" />
-                    {{ childItem.title }}
+                    {{ getNavigationLabel(childItem) }}
                     <span
                       v-if="childItem.new"
                       class="flex size-2 rounded-full bg-green-500"
-                      title="New"
+                      title="新增" aria-label="新增"
                     />
                   </NuxtLink>
                 </SidebarMenuButton>
